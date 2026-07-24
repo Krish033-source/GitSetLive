@@ -1,1 +1,10 @@
+# Environment files
 .env
+**/.env
+
+# Next.js
+.next/
+
+# Logs
+*.log
+Backend/own_server_logs/
