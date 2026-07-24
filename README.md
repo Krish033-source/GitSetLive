@@ -232,4 +232,8 @@ All endpoints that take a `user_id` also require the caller's `token`, and verif
 
 ## 📄 License
 
-Add your license of choice here.
+All Rights Reserved.
+
+Copyright © 2026 [Krishna Lal]. All rights reserved.
+
+This source code is made available for viewing purposes only (e.g. for hackathon judging/review). No permission is granted to copy, modify, distribute, sublicense, sell, or use this software or any portion of it, in source or compiled form, for any purpose without prior written permission from the copyright holder.
