@@ -12,11 +12,6 @@ from cryptography.fernet import Fernet
 
 load_dotenv()
 
-# -------- Encryption --------
-# Key must come from .env now — no more silent auto-generated
-# .encryption_key file. If this isn't set, every previously encrypted
-# Render/Vercel key + every signed login token becomes unreadable, so we
-# fail loudly at startup instead of limping along with a random key.
 ENCRYPTION_KEY = os.getenv("ENCRYPTION_KEY")
 if not ENCRYPTION_KEY:
     raise ValueError(
@@ -155,7 +150,7 @@ def callback(code: str):
         github_id = user_info.get("id")
         username = user_info.get("login")
         
-        # ✅ If email not in user info, fetch from GitHub emails endpoint
+
         email = user_info.get("email")
         if not email:
             emails_res = requests.get(
@@ -173,7 +168,7 @@ def callback(code: str):
 
         print(f"✅ GitHub user: {username}, Email: {email}")
 
-        # Create or get user in DB
+
         user_result = create_user(github_id, username, email, token)
 
         # Sign token
@@ -925,9 +920,6 @@ def apply_fix(data: ApplyFixRequest):
                 if not path or not content:
                     continue
 
-                # 🔥 invalid path check — reject actual path traversal / absolute
-                # paths, but don't reject legitimate dotted directory names
-                # (e.g. "config.d/settings.py" or ".github/workflows/x.yml")
                 if ".." in path or path.startswith("/") or path.startswith("\\"):
                     print("⚠️ Skipping unsafe path:", path)
                     skipped.append(path)
@@ -1385,7 +1377,7 @@ class WorkspaceInvite(BaseModel):
     user_id: str          # the inviter (must already be a member)
     workspace_id: str
     invite_email: str
-    role: str = "developer"  # "admin" | "developer" | "viewer"
+    role: str = "developer"  
 
 
 @app.post("/workspace/invite")
