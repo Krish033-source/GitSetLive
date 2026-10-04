@@ -6,6 +6,10 @@ Built for developers (and non-developers!) who want to go from "code on GitHub" 
 
 ---
 
+Workflow:
+<img width="763" height="682" alt="image" src="https://github.com/user-attachments/assets/8ca4579c-64c0-4155-80ad-1058c8114f48" />
+
+
 ## ✨ Features
 
 ### 🔍 AI Repo Scanner
