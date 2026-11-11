@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="GitSetLive">
+  <rect width="64" height="64" rx="15" fill="#FFF1B5"/>
+  <!-- fire -->
+  <path d="M25.5 46 C25 52 28.5 56.5 32 60 C35.5 56.5 39 52 38.5 46 Z" fill="#E23B2E"/>
+  <path d="M28.6 46 C28.5 50.5 30.2 53.5 32 55.5 C33.8 53.5 35.5 50.5 35.4 46 Z" fill="#FF8A3D"/>
+  <!-- fins -->
+  <path d="M22 33 L12.5 45.5 L22 44 Z" fill="#A87A4F" stroke="#7A5533" stroke-width="1.4" stroke-linejoin="round"/>
+  <path d="M42 33 L51.5 45.5 L42 44 Z" fill="#A87A4F" stroke="#7A5533" stroke-width="1.4" stroke-linejoin="round"/>
+  <!-- body -->
+  <path d="M32 6.5 C39.5 12.5 43 22 43 32.5 L43 44.5 L21 44.5 L21 32.5 C21 22 24.5 12.5 32 6.5 Z" fill="#C99B6D" stroke="#7A5533" stroke-width="1.6" stroke-linejoin="round"/>
+  <!-- highlight -->
+  <path d="M27 17 C25 22 24.5 27 24.5 33 L24.5 41" fill="none" stroke="#E3C39C" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- window -->
+  <circle cx="32" cy="25" r="5.2" fill="#FFF1B5" stroke="#7A5533" stroke-width="1.6"/>
+  <!-- nozzle -->
+  <rect x="25.5" y="44.5" width="13" height="3.2" rx="1.2" fill="#7A5533"/>
+</svg>

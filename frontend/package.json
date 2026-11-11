@@ -1,20 +1,23 @@
 {
-  "name": "frontend",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "gitsetlive-frontend",
+  "version": "2.0.0",
+  "private": true,
   "scripts": {
-    "dev": "next dev"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "cross-env": "^10.1.0"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "vitest run"
   },
   "dependencies": {
     "next": "^16.2.11",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.8",
+    "jsdom": "^31.0.0",
+    "vitest": "^3.2.7"
   }
 }

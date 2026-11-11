@@ -1,5 +1,5 @@
-fastapi
-uvicorn
-requests
-python-dotenv
-cryptography
+fastapi>=0.110
+uvicorn>=0.29
+requests>=2.31
+python-dotenv>=1.0
+cryptography>=42.0

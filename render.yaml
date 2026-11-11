@@ -1,0 +1,36 @@
+# Render Blueprint for the BACKEND (the frontend goes on Vercel). Render -> New -> Blueprint -> pick this repo.
+# A persistent disk is required because user accounts live in SQLite; disks need a paid instance type.
+services:
+  - type: web
+    name: gitsetlive-api
+    runtime: python
+    rootDir: backend
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    disk:
+      name: gitsetlive-data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.3
+      - key: ENV
+        value: production
+      - key: DATA_DIR
+        value: /data
+      - key: OWN_SERVER_ENABLED     # leave off on a shared PaaS: it runs users' code
+        value: "false"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ENCRYPTION_KEY         # python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+        sync: false
+      - key: GITHUB_CLIENT_ID
+        sync: false
+      - key: GITHUB_CLIENT_SECRET
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: FRONTEND_URL           # your Vercel URL, e.g. https://gitsetlive.vercel.app
+        sync: false

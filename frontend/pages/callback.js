@@ -1,57 +1,24 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useRouter } from "next/router";
+import { session } from "../lib/api";
+import { useAuth } from "../lib/auth";
+import { Spinner } from "../components/ui";
 
-const API = process.env.NEXT_PUBLIC_API || "http://localhost:5000";
-
+// The backend redirects here with  #token=...  (a URL fragment is never sent to any server).
 export default function Callback() {
   const router = useRouter();
+  const { refresh } = useAuth();
+  const ran = useRef(false);
 
   useEffect(() => {
-    if (!router.isReady) return;
+    if (ran.current) return;
+    ran.current = true;
+    const token = new URLSearchParams(window.location.hash.slice(1)).get("token");
+    window.history.replaceState(null, "", window.location.pathname); // scrub the token from the address bar
+    if (!token) { router.replace("/login?error=" + encodeURIComponent("Login didn't complete. Please try again.")); return; }
+    session.set(token);
+    refresh().then((me) => router.replace(me ? "/dashboard" : "/login?error=" + encodeURIComponent("Couldn't verify your login. Please try again.")));
+  }, [router, refresh]);
 
-    const token = new URLSearchParams(window.location.search).get("token");
-
-    if (!token) {
-      router.replace("/login?error=No token");
-      return;
-    }
-
-    if (sessionStorage.getItem("auth_done")) return;
-    sessionStorage.setItem("auth_done", "true");
-
-    localStorage.setItem("token", token);
-
-    fetch(`${API}/user-from-token?token=${token}`)
-      .then(r => r.json())
-      .then(data => {
-        if (data.user_id) {
-          localStorage.setItem("user_id", data.user_id);
-          localStorage.setItem("username", data.username || "User");
-          localStorage.setItem("email", data.email || "");
-          router.replace("/dashboard");
-        } else {
-          router.replace("/login?error=User not found");
-        }
-      })
-      .catch((err) => {
-        console.error("Auth error:", err);
-        router.replace("/login?error=Authentication failed");
-      });
-
-  }, [router.isReady, router]);
-
-  return (
-    <div style={{
-      height: "100vh",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      fontFamily: "system-ui"
-    }}>
-      <div style={{ textAlign: "center" }}>
-        <h2>Authenticating...</h2>
-        <p style={{ color: "#666" }}>Please wait while we set up your account.</p>
-      </div>
-    </div>
-  );
+  return <div className="center-screen"><div className="col" style={{ alignItems: "center" }}><Spinner lg /><p className="muted">Signing you in…</p></div></div>;
 }

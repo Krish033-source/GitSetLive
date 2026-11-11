@@ -1,10 +1,35 @@
-# Environment files
+# --- secrets & local env (never commit) ---
 .env
+.env.*
+!.env.example
 **/.env
+**/.env.*
+!**/.env.example
 
-# Next.js
+# --- runtime data (contains user tokens!) ---
+*.db
+*.db-wal
+*.db-shm
+*.sqlite3
+.encryption_key
+own_server_projects/
+own_server_logs/
+own_server_state.json
+own_server_state.tmp
+
+# --- python ---
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+
+# --- node / next ---
+node_modules/
 .next/
+out/
+coverage/
 
-# Logs
+# --- misc ---
 *.log
-Backend/own_server_logs/
+.DS_Store

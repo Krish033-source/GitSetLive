@@ -1,98 +1,21 @@
-import { useEffect, useState } from "react";
+import ChangeBuilder from "../components/ChangeBuilder";
 
-export default function UploadFile() {
-  const [repos, setRepos] = useState([]);
-  const [selectedRepo, setSelectedRepo] = useState(null);
-  const [fileType, setFileType] = useState("README.md");
-  const [prompt, setPrompt] = useState("");
-  const [output, setOutput] = useState("");
+const PRESETS = [
+  { label: "README.md", prompt: "Create a professional README.md written from this project's actual code: what it does, features, tech stack, setup steps, required environment variables, how to run and how to deploy. Do not invent features that aren't in the code." },
+  { label: ".env.example", prompt: "Create a .env.example listing every environment variable the code reads, with a short comment explaining each. Never include real values." },
+  { label: ".gitignore", prompt: "Create or complete the .gitignore for this project's stack so secrets, dependencies, build output and local databases are never committed." },
+  { label: "Dockerfile", prompt: "Create a production-ready Dockerfile (and .dockerignore) for this project: small base image, non-root user, dependency caching, reads PORT from the environment." },
+  { label: "GitHub Actions CI", prompt: "Create a GitHub Actions workflow in .github/workflows/ci.yml that installs dependencies and runs the build and tests (if any) on every push and pull request." },
+  { label: "render.yaml", prompt: "Create a render.yaml Blueprint for deploying this project on Render with the correct build and start commands, a health check path and the environment variables it needs (secrets marked sync: false)." },
+  { label: "LICENSE (MIT)", prompt: "Add an MIT LICENSE file with the current year and the repository owner as the copyright holder." },
+];
 
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("token") : null;
-
-  // Load repos
-  useEffect(() => {
-    if (!token) return;
-    fetch(`${process.env.NEXT_PUBLIC_API}/repos?token=${token}`)
-      .then((res) => res.json())
-      .then((data) => setRepos(Array.isArray(data) ? data : []))
-      .catch((err) => console.error("Repo load error:", err));
-  }, [token]);
-
-  // Generate file content
-  const generate = async () => {
-    if (!selectedRepo) return alert("Select repo first");
-
-    const res = await fetch(process.env.NEXT_PUBLIC_API + "/generate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        token,
-        owner: selectedRepo.owner.login,
-        repo: selectedRepo.name,
-        prompt: `Create ${fileType}. ${prompt}`,
-      }),
-    });
-
-    const data = await res.json();
-    setOutput(data.final);
-  };
-
-  // Upload to GitHub
-  const upload = async () => {
-    if (!output) return alert("Generate first");
-
-    await fetch(process.env.NEXT_PUBLIC_API + "/upload", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        token,
-        owner: selectedRepo.owner.login,
-        repo: selectedRepo.name,
-        path: fileType,
-        content: output,
-      }),
-    });
-
-    alert("File uploaded 🚀");
-  };
-
+export default function FileTemplates() {
   return (
-    <div style={{ padding: 20 }}>
-      <h2>Upload Non-Code Files</h2>
-
-      {/* Repo Select */}
-      <select onChange={(e) => setSelectedRepo(JSON.parse(e.target.value))}>
-        <option>Select Repo</option>
-        {repos.map((r) => (
-          <option key={r.id} value={JSON.stringify(r)}>
-            {r.name}
-          </option>
-        ))}
-      </select>
-
-      {/* File Type */}
-      <select onChange={(e) => setFileType(e.target.value)}>
-        <option>README.md</option>
-        <option>Dockerfile</option>
-        <option>Procfile</option>
-        <option>requirements.txt</option>
-        <option>.env.example</option>
-      </select>
-
-      {/* Prompt */}
-      <textarea
-        placeholder="Describe what you want..."
-        onChange={(e) => setPrompt(e.target.value)}
-      />
-
-      <br />
-
-      <button onClick={generate}>Generate</button>
-
-      <pre>{output}</pre>
-
-      <button onClick={upload}>Upload to GitHub</button>
-    </div>
+    <>
+      <div className="page-header"><div><h1>File Templates</h1><p>Generate the files every real project needs — written from your actual code, not a generic template. Review the result, then send it as a pull request.</p></div></div>
+      <ChangeBuilder presets={PRESETS} placeholder="Pick a file type above, or describe the file you need." />
+    </>
   );
 }
+FileTemplates.title = "File Templates";

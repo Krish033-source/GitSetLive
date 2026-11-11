@@ -1,0 +1,30 @@
+# Self-hosting on a VPS:  cp backend/.env.example backend/.env  (fill it in)  then  docker compose up -d --build
+# Put Caddy/nginx in front for HTTPS (see README). NOTE: not tested in the environment where it was authored.
+services:
+  api:
+    build:
+      context: ./backend
+      args:
+        WITH_OWN_SERVER: "true"        # set "false" to skip Node + cloudflared (disables public "Our Servers" links)
+    env_file: ./backend/.env
+    environment:
+      ENV: production
+      DATA_DIR: /data
+      OWN_SERVER_ENABLED: "true"       # runs users' code on this host: use a dedicated, disposable VPS
+    volumes:
+      - gitsetlive-data:/data
+    ports:
+      - "127.0.0.1:5000:5000"
+    restart: unless-stopped
+
+  web:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API: ${PUBLIC_API_URL:-http://localhost:5000}
+    ports:
+      - "127.0.0.1:3000:3000"
+    restart: unless-stopped
+
+volumes:
+  gitsetlive-data:
