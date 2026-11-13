@@ -392,5 +392,3 @@ Back up <code>app.db</code> first. Startup migrates it automatically: duplicate 
 All Rights Reserved.
 
 Copyright © 2026 [Krishna Lal]. All rights reserved.
-
-This source code is made available for viewing purposes only (e.g. for hackathon judging/review). No permission is granted to copy, modify, distribute, sublicense, sell, or use this software or any portion of it, in source or compiled form, for any purpose without prior written permission from the copyright holder.
